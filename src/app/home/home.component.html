@@ -1,18 +1,18 @@
 
 
-<form class="form-signin">
+
   <div class="text-center mb-4">
     <h1 class="h3 mb-3 font-weight-normal">Agua Gold</h1>
     <p>Agua Gold Purificada</p>
   </div>
 
   <div class="form-label-group">
-    <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+    <input type="email" id="inputEmail" #inputEmail class="form-control" placeholder="Email address" required autofocus>
     <label for="inputEmail">Dirección de Email</label>
   </div>
 
   <div class="form-label-group">
-    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+    <input type="password" id="inputPassword" #inputPassword class="form-control" placeholder="Password" required>
     <label for="inputPassword">Password</label>
   </div>
 
@@ -21,5 +21,4 @@
       <input type="checkbox" value="remember-me"> Remember me
     </label>
   </div>
-  <button class="btn btn-lg btn-primary btn-block" type="submit" (click)="validateLogin()">Ingresar</button>
-</form>
+  <button class="btn btn-lg btn-primary btn-block"  (click)="validateLogin(inputEmail.value,inputPassword.value)">Ingresar</button>

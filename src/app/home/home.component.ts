@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import * as firebase from "firebase";
+
 
 @Component({
   selector: 'app-home',
@@ -13,9 +15,20 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
   }
 
-  validateLogin(){
-    console.log("ASDF");
-    this.router.navigate(['/main']);
+  validateLogin(email: string,password: string){
+    firebase.auth().signInWithEmailAndPassword(email,password).then(user => {
+      firebase.auth().onAuthStateChanged(usuario => {
+        this.router.navigate(['/main'])
+
+      })
+    }).catch(err=> {
+      console.log(err);
+    })
+
+    //this.router.navigate(['/main']);
   }
+
+
+  
 
 }

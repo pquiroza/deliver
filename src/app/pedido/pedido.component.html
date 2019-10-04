@@ -119,59 +119,23 @@
 
         </div>
         <div class="col-md-8 order-md-1">
-          <form class="needs-validation" novalidate>
 
 
             <div class="mb-3">
               <label for="username">Dirección</label>
               <div class="input-group">
-                <input type="text" class="form-control" id="username" placeholder="Escriba Calle " required>
+                <input type="text" class="form-control" id="searchDireccion" #searchDireccion placeholder="Escriba Calle " required>
                 <div class="invalid-feedback" style="width: 100%;">
-                  Your username is required.
                 </div>
               </div>
             </div>
 
-            <div class="mb-3">
-              <label for="email">Email <span class="text-muted"></span></label>
-              <input type="email" class="form-control" id="email" placeholder="you@example.com">
-              <div class="invalid-feedback">
-                Please enter a valid email address for shipping updates.
-              </div>
-            </div>
-
-            <div class="mb-3">
-              <label for="address">Dirección</label>
-              <input type="text" class="form-control" id="address" placeholder="La Florida 1234" required>
-              <div class="invalid-feedback">
-                Please enter your shipping address.
-              </div>
-            </div>
-
-            <div class="mb-3">
-              <label for="address2">Dirección 2 <span class="text-muted">(Optional)</span></label>
-              <input type="text" class="form-control" id="address2" placeholder="Casa B / Departamento 86">
-            </div>
-
-            <div class="row">
-              <div class="col-md-5 mb-3">
-                <label for="country">Comuna</label>
-                <select class="custom-select d-block w-100" id="country" required>
-                  <option value="">Choose...</option>
-                  <option>La Florida</option>
-                  <option>Puente Alto</option>
-                </select>
-                <div class="invalid-feedback">
-                  Please select a valid country.
-                </div>
-              </div>
 
 
-            </div>
+
             <hr class="mb-4">
 
-            <button class="btn btn-primary btn-lg btn-block" type="submit">Registrar e ir a Pedido</button>
-          </form>
+            <button class="btn btn-primary btn-lg btn-block" (click)="buscarDireccion()">Buscar</button>
         </div>
       </div>
 
