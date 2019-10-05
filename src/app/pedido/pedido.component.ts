@@ -18,7 +18,6 @@ export class PedidoComponent implements OnInit {
   private clientsCollection: AngularFirestoreCollection<Client>;
   clients: Observable<ClientId[]>;
 
-
   constructor(private afs: AngularFirestore) {
     this.clientsCollection = afs.collection<Client>('Client');
 
@@ -29,6 +28,19 @@ export class PedidoComponent implements OnInit {
 buscarDireccion(){
   const direccion =  this.searchDireccion.nativeElement.value;
   console.log(direccion);
+  this.clientsCollection = this.afs.collection<Client>('Client',ref => {
+    return ref.where('calle','==',direccion);
+  });
+
+
+this.clients = this.clientsCollection.snapshotChanges().pipe(map(actions => actions.map(a => {
+  const data = a.payload.doc.data() as Client;
+  const id = a.payload.doc.id;
+  console.log(a.payload.doc.data());
+  return { id, ...data };
+})))
+  //console.log(this.clientsCollection);
+
   this.clients = this.clientsCollection.snapshotChanges().pipe(map(actions => actions.map(a=> {
     const data = a.payload.doc.data() as Client;
     const id = a.payload.doc.id;
@@ -41,6 +53,7 @@ buscarDireccion(){
     console.log(hu)
 
 } )
+
 
 
 

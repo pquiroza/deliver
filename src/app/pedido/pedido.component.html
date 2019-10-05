@@ -129,6 +129,32 @@
                 </div>
               </div>
             </div>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">Direccion</th>
+                  <th scope="col">Comuna</th>
+                  <th scope="col">Nombre Cliente</th>
+                  <th scope="col">Pedido</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let cl of clients | async">
+
+                    <td>
+                      {{ cl.calle +" "+cl.numero+" "+" "+extra}}
+                      </td>
+                      <td>
+                        {{cl.comuna}}
+                        </td>
+                      <td>
+                        {{ cl.nombre +" "+ cl.apellido}}
+                        </td>
+                        <td>
+                              <button class="btn" (click)="buscarDireccion()">Ingresa Pedido</button>
+                          </td>
+                  </tbody>
+              </table>
 
 
 
