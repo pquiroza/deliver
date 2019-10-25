@@ -13,11 +13,19 @@ export class HomeComponent implements OnInit {
   constructor(private router: Router) { }
 
   ngOnInit() {
+    firebase.auth().onAuthStateChanged(usuario => {
+      console.log(usuario);
+      if (usuario){
+        this.router.navigate(['/main'])
+
+      }
+    })
   }
 
   validateLogin(email: string,password: string){
     firebase.auth().signInWithEmailAndPassword(email,password).then(user => {
       firebase.auth().onAuthStateChanged(usuario => {
+        console.log(usuario);
         this.router.navigate(['/main'])
 
       })
@@ -29,6 +37,6 @@ export class HomeComponent implements OnInit {
   }
 
 
-  
+
 
 }

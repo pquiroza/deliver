@@ -86,82 +86,83 @@
 
     <div class="container">
       <div class="py-5 text-center">
-        <h2> Nuevo Pedido</h2>
-
+        <h3>Nuevo Pedido</h3>
       </div>
 
       <div class="row">
         <div class="col-md-4 order-md-2 mb-4">
           <h4 class="d-flex justify-content-between align-items-center mb-3">
-            <span class="text-muted">Últimos Pedidos</span>
+            <span class="text-muted">Pedido</span>
             <span class="badge badge-secondary badge-pill">3</span>
           </h4>
           <ul class="list-group mb-3">
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
+            <li *ngFor="let p of productsCarro | async" class="list-group-item d-flex justify-content-between lh-condensed">
               <div>
-                <h6 class="my-0">2 Bidones</h6>
-                <small class="text-muted">Vicuña Mackenna 2345</small>
+                <h6 class="my-0">{{p.nombreproducto}}</h6>
+                <small class="text-muted">{{p.cantidad}}</small>
               </div>
-              <span class="text-muted">$5000</span>
+              <span class="text-muted">{{p.precio * p.cantidad}}</span>
             </li>
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
-              <div>
-                <h6 class="my-0">1 Bidón</h6>
-                <small class="text-muted">Las Acacias 2345 Dpto 12</small>
-              </div>
-              <span class="text-muted">$2500</span>
-            </li>
+
 
 
 
           </ul>
 
-
+          <div class="btn-group mr-2">
+            <button type="button" class="btn btn-primary btn-lg btn-block" (click)="finalizarPedido(client.id)">Finalizar Pedido</button>
+          </div>
         </div>
         <div class="col-md-8 order-md-1">
 
+          <div class="card">
+            <div class="card-header">
+              Datos de Cliente
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">{{client.nombre+" "+client.apellido }}</h5>
+              <p class="card-text">{{client.calle+" "+client.numero+" "+client.extra}}</p>
+            </div>
+          </div>
+            <hr class="mb-4">
+            <div class="row">
+              <div class="col-md-8 mb-5">
+                <label for="country">Producto</label>
+                <select id=productoInput #productoInput class="custom-select d-block w-100" id="country" required>
+                  <option *ngFor="let pd of products | async" [value]="pd.id" >{{pd.nombreProducto+" "+pd.precio}}</option>
 
-            <div class="mb-3">
-              <label for="username">Dirección</label>
-              <div class="input-group">
-                <input type="text" class="form-control" id="searchDireccion" #searchDireccion placeholder="Escriba Calle " required>
-                <div class="invalid-feedback" style="width: 100%;">
+
+                </select>
+                <div class="invalid-feedback">
+                  Please select a valid country.
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="state">Cantidad</label>
+                <select id=cantidadInput #cantidadInput class="custom-select d-block w-100" id="state" required>
+                  <option value="">Elegir Cantidad...</option>
+                  <option value=1>1</option>
+                  <option value=2>2</option>
+                  <option value=3>3</option>
+                  <option value=4>4</option>
+                  <option value=5>5</option>
+                  <option value=6>6</option>
+                  <option value=7>7</option>
+                  <option value=8>8</option>
+                  <option value=9>9</option>
+                  <option value=10>10</option>
+                  <option value=11>11</option>
+                  <option value=12>12</option>
+
+                </select>
+                <div class="invalid-feedback">
+                  Please provide a valid state.
                 </div>
               </div>
             </div>
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th scope="col">Direccion</th>
-                  <th scope="col">Comuna</th>
-                  <th scope="col">Nombre Cliente</th>
-                  <th scope="col">Pedido</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let cl of clients | async" >
 
-                    <td>
-                      {{ cl.calle +" "+cl.numero+" "+" "+cl.extra}}
-                      </td>
-                      <td>
-                        {{cl.comuna}}
-                        </td>
-                      <td>
-                        {{ cl.nombre +" "+ cl.apellido}}
-                        </td>
-                        <td>
-                              <button class="btn" (click)="ingresarPedido(cl.id)">Ingresa Pedido</button>
-                          </td>
-                  </tbody>
-              </table>
+            <button class="btn btn-primary btn-lg btn-block" (click)="guardaProducto(client.id, client.nombre,client.apellido,client.calle,client.numero,client.extra, client.comuna,client.lat,client.lng)">Ingresar Producto</button>
 
-
-
-
-            <hr class="mb-4">
-
-            <button class="btn btn-primary btn-lg btn-block" (click)="buscarDireccion()">Buscar</button>
         </div>
       </div>
 

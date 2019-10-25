@@ -3,6 +3,7 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import { Observable } from 'rxjs';
 import { Client } from '../client';
 import { map } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 export interface ClientId extends Client {
     id: string;
@@ -18,7 +19,7 @@ export class PedidoComponent implements OnInit {
   private clientsCollection: AngularFirestoreCollection<Client>;
   clients: Observable<ClientId[]>;
 
-  constructor(private afs: AngularFirestore) {
+  constructor(private afs: AngularFirestore, private router: Router) {
     this.clientsCollection = afs.collection<Client>('Client');
 
    }
@@ -28,8 +29,9 @@ export class PedidoComponent implements OnInit {
 buscarDireccion(){
   const direccion =  this.searchDireccion.nativeElement.value;
   console.log(direccion);
+
   this.clientsCollection = this.afs.collection<Client>('Client',ref => {
-    return ref.where('calle','==',direccion);
+    return ref.where('callearray','array-contains',direccion);
   });
 
 
@@ -39,15 +41,11 @@ this.clients = this.clientsCollection.snapshotChanges().pipe(map(actions => acti
   console.log(a.payload.doc.data());
   return { id, ...data };
 })))
+
+
+
   //console.log(this.clientsCollection);
 
-  this.clients = this.clientsCollection.snapshotChanges().pipe(map(actions => actions.map(a=> {
-    const data = a.payload.doc.data() as Client;
-    const id = a.payload.doc.id;
-    console.log(a.payload.doc.data());
-    return { id, ...data };
-
-  })))
 
   this.clients.forEach(function(hu){
     console.log(hu)
@@ -57,6 +55,12 @@ this.clients = this.clientsCollection.snapshotChanges().pipe(map(actions => acti
 
 
 
+
+}
+
+
+ingresarPedido(idc){
+  this.router.navigate(['/nuevopedido'],{queryParams:{idCliente:idc}});
 
 }
 }

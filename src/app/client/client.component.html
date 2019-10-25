@@ -117,7 +117,7 @@
           </ul>
 
           <div class="btn-group mr-2">
-            <button type="button" class="btn btn-sm btn-outline-secondary">Nuevo Pedido</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary" (click)="goPedido()">Nuevo Pedido</button>
           </div>
         </div>
         <div class="col-md-8 order-md-1">
@@ -157,6 +157,13 @@
                 Please enter a valid email address for shipping updates.
               </div>
             </div>
+            <div class="mb-3">
+              <label for="telefono">Telefono <span class="text-muted"></span></label>
+              <input type="text" class="form-control" id="telefonoInput" #telefonoInput placeholder="+56945678907">
+              <div class="invalid-feedback">
+                Please enter a valid email address for shipping updates.
+              </div>
+            </div>
 
             <div class="mb-3">
               <label for="address">Avenida / Calle / Pasaje </label>
@@ -185,6 +192,7 @@
                   <option value="">Choose...</option>
                   <option>La Florida</option>
                   <option>Puente Alto</option>
+                  <option>San Miguel</option>
                 </select>
                 <div class="invalid-feedback">
                   Please select a valid country.
