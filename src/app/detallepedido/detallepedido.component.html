@@ -32,12 +32,7 @@
               Productos
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="javascript:;" routerLink="/mainflota">
-              <span data-feather="shopping-cart"></span>
-              Administración de Flota
-            </a>
-          </li>
+
           <li class="nav-item">
             <a class="nav-link" href="javascript:;" routerLink="/Reporte">
               <span data-feather="bar-chart-2"></span>
@@ -46,7 +41,6 @@
           </li>
 
         </ul>
-
 
       </div>
     </nav>
@@ -66,11 +60,10 @@
       <div class="row">
         <div class="col-md-4 order-md-2 mb-4">
           <h4 class="d-flex justify-content-between align-items-center mb-3">
-            <span class="text-muted">Pedido</span>
-            <span class="badge badge-secondary badge-pill">3</span>
+            <span class="text-muted">Pedidos Anteriorers</span>
           </h4>
           <ul class="list-group mb-3">
-            <li *ngFor="let p of productsCarro | async" class="list-group-item d-flex justify-content-between lh-condensed">
+            <li *ngFor="let p of productosPedido | async" class="list-group-item d-flex justify-content-between lh-condensed">
               <div>
                 <h6 class="my-0">{{p.nombreproducto}}</h6>
                 <small class="text-muted">{{p.cantidad}}</small>
@@ -83,9 +76,7 @@
 
           </ul>
 
-          <div class="btn-group mr-2">
-            <button type="button" class="btn btn-primary btn-lg btn-block" (click)="finalizaPedido(client.id)">Finalizar Pedido</button>
-          </div>
+
         </div>
         <div class="col-md-8 order-md-1">
 
@@ -94,48 +85,58 @@
               Datos de Cliente
             </div>
             <div class="card-body">
-              <h5 class="card-title">{{client.nombre+" "+client.apellido }}</h5>
-              <p class="card-text">{{client.calle+" "+client.numero+" "+client.extra}}</p>
+              <h5 class="card-title">Nombre: {{cliente.nombre+" "+cliente.apellido }}</h5>
+              <p class="card-text">Dirección: {{cliente.calle+" "+cliente.numero+" "+cliente.extra}}</p>
+              <p class="card-text">Comuna: {{cliente.comuna}}</p>
+
             </div>
+            <ngb-toast
+              *ngIf="this.tostada"
+              [delay]="500"
+              [autohide]="true"
+              (ariaLive) = "alert"
+
+            >
+
+              <div>
+                Producto Eliminado
+              </div>
+            </ngb-toast>
+            <h3>Detalle de Pedido</h3>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                <th scope="col">#</th>
+                <th scope="col">Producto</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Total</th>
+                <th scope="col">Eliminar</th>
+
+
+                </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let p of productosPedido | async; index as i ">
+                    <th scope="row">{{ i + 1}}</th>
+                    <th>{{p.nombreproducto}}</th>
+                    <th>{{p.cantidad}}</th>
+                    <th>{{p.precio}}</th>
+                    <th>{{p.precio*p.cantidad}}</th>
+                    <th><fa-icon style="color: red;" [icon]="['fas','times']" (click)="borrarProducto(p.id)"></fa-icon></th>
+                  </tbody>
+
+              </table>
           </div>
             <hr class="mb-4">
-            <div class="row">
-              <div class="col-md-8 mb-5">
-                <label for="country">Producto</label>
-                <select id=productoInput #productoInput class="custom-select d-block w-100" id="country" required>
-                  <option *ngFor="let pd of products | async" [value]="pd.id" >{{pd.nombreProducto+" "+pd.precio}}</option>
+            <div>
+              <agm-map [latitude]="-33.492246" [longitude]="-70.651889" [zoom]="15">
 
-
-                </select>
-                <div class="invalid-feedback">
-                  Please select a valid country.
-                </div>
+        <agm-marker [latitude]="cliente.lat" [longitude]="cliente.lng"></agm-marker>
+      </agm-map>
               </div>
-              <div class="col-md-4 mb-3">
-                <label for="state">Cantidad</label>
-                <select id=cantidadInput #cantidadInput class="custom-select d-block w-100" id="state" required>
-                  <option value="">Elegir Cantidad...</option>
-                  <option value=1>1</option>
-                  <option value=2>2</option>
-                  <option value=3>3</option>
-                  <option value=4>4</option>
-                  <option value=5>5</option>
-                  <option value=6>6</option>
-                  <option value=7>7</option>
-                  <option value=8>8</option>
-                  <option value=9>9</option>
-                  <option value=10>10</option>
-                  <option value=11>11</option>
-                  <option value=12>12</option>
 
-                </select>
-                <div class="invalid-feedback">
-                  Please provide a valid state.
-                </div>
-              </div>
-            </div>
-
-            <button class="btn btn-primary btn-lg btn-block" (click)="guardaProducto(client.id, client.nombre,client.apellido,client.calle,client.numero,client.extra, client.comuna,client.lat,client.lng)">Ingresar Producto</button>
+            <button class="btn btn-danger btn-lg btn-block"  (click)="cancelaPedido(idPedido)">Cancelar Producto</button>
 
         </div>
       </div>
@@ -151,4 +152,6 @@
     </div>
 
   </div>
+
+
 </div>

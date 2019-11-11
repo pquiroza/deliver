@@ -104,8 +104,8 @@ body {
   border-color: transparent;
   box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
 }
-
-
-agm-map {
-  height: 600px;
+.container {
+  max-width: 960px;
 }
+
+.lh-condensed { line-height: 1.25; }

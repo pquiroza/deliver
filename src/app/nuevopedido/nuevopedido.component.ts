@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router'
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument  } from '@angular/fire/firestore';
+  import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument  } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Client } from '../client';
 import { map } from 'rxjs/operators';
@@ -41,9 +41,8 @@ export interface CarroId extends Carro{
 export interface ProductId extends Product {
     id: string;
 }
-export interface PedidoId extends Pedido {
-  id: string;
-}
+
+
 @Component({
   selector: 'app-nuevopedido',
   templateUrl: './nuevopedido.component.html',
@@ -72,6 +71,7 @@ export class NuevopedidoComponent implements OnInit {
   private pedidoCollection: AngularFirestoreCollection<Pedido>;
   public productos: Array<Carro>;
   client: any;
+  subscarro: any;
 
   public pedidofinalCollection: AngularFirestoreCollection<Pedidofinal>;
 
@@ -166,82 +166,52 @@ this.productoDoc.snapshotChanges().subscribe(pro => {
 }
 
 
-finalizarPedido(idc){
 
+finalizaPedido(idc){
   console.log(idc);
   console.log(this.client);
   const idpf = this.afs.createId();
-  const pcliente: Pedidofinal = {id:idpf,idcliente:idc,nombre:this.client.nombre,apellido:this.client.apellido,calle: this.client.calle,numero: this.client.numero, extra: this.client.extra,comuna: this.client.comuna,callearray:this.client.callearray,estado:"Ingresado",movil:0,lat:this.client.lat,lng:this.client.lng}
+  const pcliente: Pedidofinal = {id:idpf,idcliente:idc,nombre:this.client.nombre,apellido:this.client.apellido,calle: this.client.calle,numero: this.client.numero, extra: this.client.extra,comuna: this.client.comuna,callearray:this.client.callearray,estado:"Ingresado",movil:"JRRB99",lat:this.client.lat,lng:this.client.lng, total: 0}
   this.pedidofinalCollection.doc(idpf).set(pcliente);
   let productosPedidoCollection: AngularFirestoreCollection<Productospedido>;
   productosPedidoCollection = this.afs.collection<Productospedido>('ProductosPedido');
   this.productsCarrofinal = this.afs.collection<Carro>('Carro',ref => ref.where('idusuario','==',this.idcliente).where('estado','==',0));
 
+  var p1 = new Promise(
+    (resolve,reject) =>{
 
-this.productsCarro2 = this.productsCarrofinal.valueChanges();
+      console.log("PROMISE ")
+    this.productsCarro2 = this.productsCarrofinal.valueChanges();
+    this.productsCarro2.subscribe(p => {
 
+      resolve(p);
+    })
 
-/*
+    }
+  );
 
-  this.productsCarro2 = this.productsCarrofinal.snapshotChanges().pipe(map(actions => actions.map(a => {
-    const data = a.payload.doc.data() as Carro;
-    const id = a.payload.doc.id;
-    console.log(a.payload.doc.data());
+  let total = 0;
+  p1.then((val: Array<Carro>) => {
 
-    const pedidoProducto: Productospedido = {idpedido: idpf,idproducto: data.idproducto,nombreproducto: data.nombreproducto,cantidad:data.cantidad,precio:data.precio}
-    productosPedidoCollection.add(pedidoProducto);
-    this.pedidoCollection.doc(id).update({estado:1})
-    return {id, ...data}
-
-  })))
-
-*/
-
-
-
-
-/*
-    let pedidoProductos: AngularFirestoreCollection<Product>;
-      pedidoProductos =  this.afs.collection<Product>('Pedido/'+idpf+'/Productos');
-/*
-  this.productsCarfinal = this.productsCarro.snapshotChanges().pipe(map(actions => actions.map(a => {
-    const data = a.payload.doc.data() as Product;
-    const id = a.payload.doc.id;
-    data.id = id;
-    pedidoProductos.add(data);
-
-    return{id, ...data}
+    val.forEach(data => {
+      console.log(data);
+      console.log("SEPARATOR ctm");
+      const pedidoProducto: Productospedido = {idpedido: idpf,idproducto: data.idproducto,nombreproducto: data.nombreproducto,cantidad:data.cantidad,precio:data.precio}
+      productosPedidoCollection.add(pedidoProducto);
+      total = total + (data.cantidad * data.precio);
+      this.pedidoCollection.doc(data.id).update({estado:1});
 
 
-  })))
-*/
-
-
-const subscarro = this.productsCarro2.subscribe(p => {
-  this.productos = p;
-  this.productos.forEach(data => {
-    console.log(data);
-    console.log("SEPARATOR");
-    const pedidoProducto: Productospedido = {idpedido: idpf,idproducto: data.idproducto,nombreproducto: data.nombreproducto,cantidad:data.cantidad,precio:data.precio}
-    productosPedidoCollection.add(pedidoProducto);
-  //  this.pedidoCollection.doc(data.id).update({estado:1})
+    });
+    const modalRef = this.modalService.open(NgbdModalPedido);
+    modalRef.componentInstance.name = "Pedido Ingresado Exitosamente";
+    console.log(total);
+    this.pedidofinalCollection.doc(idpf).update({total: total})
+    modalRef.result.then(() => { this.router.navigate(['/main']);},() => { this.router.navigate(['/main'])})
   })
-})
-
-
-
-
-
-//ACA FALTA EL MENSAJE DE CONFIRMACION DE PEDIDO INGRESADO
-/*
-const modalRef = this.modalService.open(NgbdModalPedido);
-modalRef.componentInstance.name = "Pedido Ingresado Exitosamente";
-modalRef.result.then(() => { this.router.navigate(['/main']);},() => { this.router.navigate(['/main'])})
-
-*/
-
-
 }
+
+
 
 
 

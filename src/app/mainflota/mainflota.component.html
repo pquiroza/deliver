@@ -15,7 +15,7 @@
       <div class="sidebar-sticky">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link active" href="javascript:;" routerLink="/main">
+            <a class="nav-link " href="javascript:;" routerLink="/main">
               <span data-feather="home"></span>
               Home <span class="sr-only">(current)</span>
             </a>
@@ -27,17 +27,18 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="javascript:;" routerLink="/mainproducto">
+            <a class="nav-link " href="javascript:;" routerLink="/mainproducto">
               <span data-feather="shopping-cart"></span>
               Productos
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="javascript:;" routerLink="/mainflota">
+            <a class="nav-link active" href="javascript:;" routerLink="/mainflota">
               <span data-feather="shopping-cart"></span>
               Administración de Flota
             </a>
           </li>
+
           <li class="nav-item">
             <a class="nav-link" href="javascript:;" routerLink="/Reporte">
               <span data-feather="bar-chart-2"></span>
@@ -56,36 +57,35 @@
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <div class="btn-toolbar mb-2 mb-md-0">
           <div class="btn-group mr-2">
-            <button type="button" class="btn btn-sm btn-outline-secondary" (click)="goPedido()">Nuevo Pedido</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary" (click)="nuevoProducto()">Nuevo Transporte</button>
           </div>
 
         </div>
       </div>
 
 
-      <h2>Pedidos Pendientes</h2>
+      <h2>Flota de Transportes</h2>
       <div class="table-responsive">
         <table class="table table-striped table-sm">
           <thead>
             <tr>
-              <th>Dirección</th>
-              <th>Comuna</th>
-              <th>Cliente</th>
+              <th>Patente</th>
+              <th>Marca/Modelo</th>
+              <th>Año</th>
+              <th>Conductor</th>
               <th>Estado</th>
-              <th>Total</th>
-              <th>Móvil</th>
-              <th>Detalle</th>
+              <th>Editar</th>
+
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let p of pedidos | async">
-              <td>{{p.calle+" "+p.numero+" "+p.extra}}</td>
-              <td>{{p.comuna}}</td>
-              <td>{{p.nombre+" "+p.apellido}}</td>
-              <td>{{p.estado}}</td>
-              <td>{{p.total}}</td>
-              <td>{{p.movil}}</td>
-              <td><fa-icon [icon]="['fas','search']" (click)="detallePedido(p.id)"></fa-icon></td>
+            <tr *ngFor="let v of vehiculos | async">
+              <td>{{v.patente}}</td>
+              <td>{{v.marca+" "+v.modelo}}</td>
+              <td>{{v.year}}</td>
+              <td>{{v.conductor}}</td>
+              <td>{{v.estado}}</td>
+              <td><fa-icon [icon]="['fas','search']" (click)="editarVehiculo(v.id)"></fa-icon></td>
             </tr>
 
 
@@ -97,14 +97,7 @@
           </tbody>
         </table>
       </div>
-      <h2>Vista Mapa </h2>
 
-      <div>
-        <agm-map [latitude]="-33.492246" [longitude]="-70.651889" [zoom]="15">
-
-  <agm-marker *ngFor="let p of pedidos | async" [latitude]="p.lat" [longitude]="p.lng"></agm-marker>
-</agm-map>
-        </div>
     </main>
   </div>
 </div>

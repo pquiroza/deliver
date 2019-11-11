@@ -1,0 +1,130 @@
+
+<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+  <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Agua Gold</a>
+  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+  <ul class="navbar-nav px-3">
+    <li class="nav-item text-nowrap">
+      <a class="nav-link" href="#">Sign out</a>
+    </li>
+  </ul>
+</nav>
+
+<div class="container-fluid">
+  <div class="row">
+    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+      <div class="sidebar-sticky">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link " href="javascript:;" routerLink="/main">
+              <span data-feather="home"></span>
+              Home
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="javascript:;" routerLink="/client">
+              <span data-feather="file"></span>
+              Clientes  <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="javascript:;" routerLink="/mainproducto">
+              <span data-feather="shopping-cart"></span>
+              Productos
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="javascript:;" routerLink="/mainflota">
+              <span data-feather="shopping-cart"></span>
+              Administración de Flota
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="javascript:;" routerLink="/Reporte">
+              <span data-feather="bar-chart-2"></span>
+              Reporte
+            </a>
+          </li>
+
+        </ul>
+
+      </div>
+    </nav>
+    ---
+    layout: examples
+    title: Checkout example
+    extra_css: "form-validation.css"
+    extra_js: "form-validation.js"
+    body_class: "bg-light"
+    ---
+
+    <div class="container">
+      <div class="py-5 text-center">
+        <h2> Editar Producto</h2>
+        <p class="lead">Edita los datos de un producto</p>
+      </div>
+
+      <div class="row">
+
+        <div class="col-md-8 order-md-1">
+          <h4 class="mb-3">Datos de Producto</h4>
+
+
+
+            <div class="mb-3">
+              <label for="nombreproducto">Nombre Producto</label>
+              <div class="input-group">
+                <input type="text" class="form-control" id="nombreproducto" #nombreproducto placeholder="Nombre de producto" value="{{producto.nombreProducto}}" required>
+                <div class="invalid-feedback" style="width: 100%;">
+                  Your username is required.
+                </div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="detalle">Descripción de  Producto</label>
+              <div class="input-group">
+                <input type="text" class="form-control" id="detalle" #detalle placeholder="Descripción o detalle del Producto" value="{{producto.detalle}}" required>
+                <div class="invalid-feedback" style="width: 100%;">
+                  Your username is required.
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="cc-name">Precio</label>
+                <input type="number" class="form-control" id="precio" #precio placeholder="" value="{{producto.precio}}" required>
+                <div class="invalid-feedback">
+                  Name on card is required
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="cc-number">Stock</label>
+                <input type="text" class="form-control" id="stock" #stock placeholder="" value="{{producto.stock}}" required>
+                <div class="invalid-feedback">
+                  Credit card number is required
+                </div>
+              </div>
+            </div>
+
+
+
+
+            <hr class="mb-4">
+
+            <button class="btn btn-primary btn-lg btn-block" (click)="guardaProducto(producto.id)">Guardar Producto</button>
+
+        </div>
+      </div>
+
+      <footer class="my-5 pt-5 text-muted text-center text-small">
+        <p class="mb-1">2019</p>
+        <ul class="list-inline">
+          <li class="list-inline-item"><a href="#">Privacy</a></li>
+          <li class="list-inline-item"><a href="#">Terms</a></li>
+          <li class="list-inline-item"><a href="#">Support</a></li>
+        </ul>
+      </footer>
+    </div>
+
+  </div>
+</div>

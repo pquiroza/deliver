@@ -15,26 +15,34 @@
       <div class="sidebar-sticky">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link" href="javascript:;" routerLink="/main">
+            <a class="nav-link " href="javascript:;" routerLink="/main">
               <span data-feather="home"></span>
-              Pedidos
+              Home
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="#">
+            <a class="nav-link active" href="javascript:;" routerLink="/client">
               <span data-feather="file"></span>
               Clientes  <span class="sr-only">(current)</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="javascript:;" routerLink="/mainproducto">
               <span data-feather="shopping-cart"></span>
-              Stock Productos
+              Productos
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="javascript:;" routerLink="/mainflota">
+              <span data-feather="shopping-cart"></span>
+              Administración de Flota
             </a>
           </li>
 
+
+
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="javascript:;" routerLink="/Reporte">
               <span data-feather="bar-chart-2"></span>
               Reporte
             </a>
@@ -42,38 +50,6 @@
 
         </ul>
 
-        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-          <span>Saved reports</span>
-          <a class="d-flex align-items-center text-muted" href="#">
-            <span data-feather="plus-circle"></span>
-          </a>
-        </h6>
-        <ul class="nav flex-column mb-2">
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="file-text"></span>
-              Current month
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="file-text"></span>
-              Last quarter
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="file-text"></span>
-              Social engagement
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="file-text"></span>
-              Year-end sale
-            </a>
-          </li>
-        </ul>
       </div>
     </nav>
     ---
@@ -97,20 +73,13 @@
             <span class="badge badge-secondary badge-pill">3</span>
           </h4>
           <ul class="list-group mb-3">
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
+            <li *ngFor="let p of pedidos | async" class="list-group-item d-flex justify-content-between lh-condensed">
               <div>
-                <h6 class="my-0">2 Bidones</h6>
-                <small class="text-muted">Vicuña Mackenna 2345</small>
+                <h6 class="my-0">{{p.nombre+" "+p.apellido}}</h6>
+                <small class="text-muted">{{p.calle+" "+p.numero+" "+p.extra+" "+p.comuna}}</small>
               </div>
-              <span class="text-muted">$5000</span>
             </li>
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
-              <div>
-                <h6 class="my-0">1 Bidón</h6>
-                <small class="text-muted">Las Acacias 2345 Dpto 12</small>
-              </div>
-              <span class="text-muted">$2500</span>
-            </li>
+
 
 
 

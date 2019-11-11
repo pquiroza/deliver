@@ -6,8 +6,8 @@ import {NgbModal, ModalDismissReasons, NgbActiveModal} from '@ng-bootstrap/ng-bo
 import { Router } from '@angular/router';
 import { MapsAPILoader, AgmMap } from '@agm/core';
 import { GoogleMapsAPIWrapper } from '@agm/core/services';
-
-
+import { Pedidofinal } from '../pedidofinal';
+import { map } from 'rxjs/operators';
 
 declare var google: any;
 
@@ -33,6 +33,9 @@ interface Location {
 }
 
 
+export interface PedidoId extends Pedidofinal {
+  id: string;
+}
 
 @Component({
   selector: 'app-client',
@@ -81,11 +84,23 @@ export class ClientComponent implements OnInit {
 
 
   clients: Observable<Client[]>;
+  public pedidosCollection: AngularFirestoreCollection<Pedidofinal>;
+pedidos: Observable<PedidoId[]>;
+
+
 
   constructor(public afs: AngularFirestore,private modalService: NgbModal, private router: Router, public mapsApiLoader: MapsAPILoader) {
     this.mapsApiLoader.load().then(() => {
       this.geocoder = new google.maps.Geocoder();
     })
+
+    this.pedidosCollection = afs.collection<Pedidofinal>('Pedido',ref => ref.where('estado','==','Ingresado'));
+    this.pedidos = this.pedidosCollection.snapshotChanges().pipe(map(actions => actions.map(a => {
+const data = a.payload.doc.data();
+const id = a.payload.doc.id;
+return {id, ...data}
+
+    })))
 
    }
 
@@ -143,7 +158,7 @@ if (nombre=="" || apellido=="" || rut=="" || calle=="" || numero=="" || telefono
 
     this.geocoder = new google.maps.Geocoder()
 
-      this.findcoordinates(calle+" "+numero+" "+comuna, this.geocoder,(results) => {
+      this.findcoordinates(calle+" "+numero+" "+comuna+" Santiago, Chile", this.geocoder,(results) => {
         if(results){
           console.log(results);
           console.log(results[0].geometry.location.lat());
@@ -194,7 +209,7 @@ console.log(direccion);
 
     }
     else{
-
+      console.log(status);
       console.log("pal pico");
       callback(null);
     }

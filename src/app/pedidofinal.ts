@@ -9,7 +9,8 @@ export interface Pedidofinal {
   comuna: string;
   callearray: [];
   estado: string;
-  movil: number;
+  movil: string;
   lat: number;
   lng: number;
+  total: number;
 }
