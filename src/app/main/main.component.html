@@ -103,6 +103,25 @@
         <agm-map [latitude]="-33.492246" [longitude]="-70.651889" [zoom]="15">
 
   <agm-marker *ngFor="let p of pedidos | async" [latitude]="p.lat" [longitude]="p.lng"></agm-marker>
+  <agm-marker *ngFor="let ps of posiciones | async" [latitude]="ps.lat" [longitude]="ps.lng"
+  [iconUrl]="{
+    url: './assets/truck.png',
+    scaledSize: {
+          width: 40,
+          height: 60
+      }
+  }"
+
+  >
+    <agm-info-window>Movil: {{ps.patente}}
+
+
+
+    </agm-info-window>
+
+  </agm-marker>
+
+
 </agm-map>
         </div>
     </main>

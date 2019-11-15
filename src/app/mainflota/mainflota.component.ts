@@ -34,6 +34,11 @@ export class MainflotaComponent implements OnInit {
 
   }
 
+
+  editarVehiculo(idVehiculo){
+    this.router.navigate(['/editarflota'],{queryParams:{idVehiculo:idVehiculo}});
+  }
+
   ngOnInit() {
   }
 

@@ -1,1 +1,182 @@
-<p>editarflota works!</p>
+
+<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+  <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Agua Gold</a>
+  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+  <ul class="navbar-nav px-3">
+    <li class="nav-item text-nowrap">
+      <a class="nav-link" href="#">Sign out</a>
+    </li>
+  </ul>
+</nav>
+
+<div class="container-fluid">
+  <div class="row">
+    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+      <div class="sidebar-sticky">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" href="javascript:;" routerLink="/main">
+              <span data-feather="home"></span>
+              Home <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="javascript:;" routerLink="/client">
+              <span data-feather="file"></span>
+              Clientes
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="javascript:;" routerLink="/mainproducto">
+              <span data-feather="shopping-cart"></span>
+              Productos
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="javascript:;" routerLink="/Reporte">
+              <span data-feather="bar-chart-2"></span>
+              Reporte
+            </a>
+          </li>
+
+        </ul>
+
+      </div>
+    </nav>
+    ---
+    layout: examples
+    title: Checkout example
+    extra_css: "form-validation.css"
+    extra_js: "form-validation.js"
+    body_class: "bg-light"
+    ---
+
+    <div class="container">
+      <div class="py-5 text-center">
+        <h3>Nuevo Pedido</h3>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4 order-md-2 mb-4">
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-muted">Pedidos de Vehículo</span>
+          </h4>
+          <ul class="list-group mb-3">
+            <li *ngFor="let p of pedidos | async" class="list-group-item d-flex justify-content-between lh-condensed">
+              <div>
+                <h6 class="my-0">{{p.calle+" "+p.numero+" "+p.extra}}</h6>
+                <small class="text-muted">{{p.nombre+" "+p.apellido}}</small>
+              </div>
+              <span class="text-muted">{{p.total}}</span>
+            </li>
+
+
+
+
+          </ul>
+
+
+        </div>
+        <div class="col-md-8 order-md-1">
+
+          <div class="card">
+            <div class="card-header">
+              Datos de Vehículo
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">Patente: {{vehiculo.patente }}</h5>
+              <p class="card-text">Marca/Modelo: {{vehiculo.marca+" "+vehiculo.modelo}}</p>
+              <p class="card-text">Conductor: {{vehiculo.conductor}}</p>
+
+            </div>
+            <ngb-toast
+              *ngIf="this.tostada"
+              [delay]="500"
+              [autohide]="true"
+              (ariaLive) = "alert"
+
+            >
+
+              <div>
+                Carga Eliminada
+              </div>
+            </ngb-toast>
+            <h4>Carga en Vehículo</h4>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                <th scope="col">#</th>
+                <th scope="col">Producto</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Eliminar</th>
+
+
+                </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let c of carga | async; index as i ">
+                    <th scope="row">{{ i + 1}}</th>
+                    <th>{{c.nombreproducto}}</th>
+                    <th>{{c.cantidad}}</th>
+                    <th><fa-icon style="color: red;" [icon]="['fas','times']" (click)="borrarProducto(c.id)"></fa-icon></th>
+                  </tbody>
+
+              </table>
+          </div>
+          <div>
+            <h3>Productos Disponibles para Asignar</h3>
+            <div class="row">
+              <div class="col-md-8 mb-5">
+                <label for="country">Producto</label>
+                <select id=productoInput #productoInput class="custom-select d-block w-100" id="country" required>
+                  <option *ngFor="let pd of productos | async" [value]="pd.id" >{{pd.nombreProducto+" Stock: "+pd.stock}}</option>
+
+
+                </select>
+                <div class="invalid-feedback">
+                  Please select a valid country.
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="state">Cantidad</label>
+                <div class="mb-3">
+                  <input type="text" class="form-control" id="cantidadInput" #cantidadInput placeholder="1234" required>
+                  <div class="invalid-feedback">
+                    Please enter your shipping address.
+                  </div>
+                </div>
+                <div class="invalid-feedback">
+                  Please provide a valid state.
+                </div>
+              </div>
+              <button class="btn btn-primary btn-lg btn-block"  (click)="asignarProducto(vehiculo.id)">Asignar a Vehículo</button>
+
+            </div>
+            </div>
+            <hr class="mb-4">
+            <div>
+              <agm-map [latitude]="-33.492246" [longitude]="-70.651889" [zoom]="15">
+                <agm-marker *ngFor="let p of pedidos | async" [latitude]="p.lat" [longitude]="p.lng"></agm-marker>
+
+      </agm-map>
+              </div>
+
+
+        </div>
+      </div>
+
+      <footer class="my-5 pt-5 text-muted text-center text-small">
+        <p class="mb-1">2019</p>
+        <ul class="list-inline">
+          <li class="list-inline-item"><a href="#">Privacy</a></li>
+          <li class="list-inline-item"><a href="#">Terms</a></li>
+          <li class="list-inline-item"><a href="#">Support</a></li>
+        </ul>
+      </footer>
+    </div>
+
+  </div>
+
+
+</div>

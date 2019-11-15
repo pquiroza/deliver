@@ -194,8 +194,7 @@ finalizaPedido(idc){
   p1.then((val: Array<Carro>) => {
 
     val.forEach(data => {
-      console.log(data);
-      console.log("SEPARATOR ctm");
+
       const pedidoProducto: Productospedido = {idpedido: idpf,idproducto: data.idproducto,nombreproducto: data.nombreproducto,cantidad:data.cantidad,precio:data.precio}
       productosPedidoCollection.add(pedidoProducto);
       total = total + (data.cantidad * data.precio);

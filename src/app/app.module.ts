@@ -65,7 +65,7 @@ import { EditarflotaComponent } from './editarflota/editarflota.component';
       apiKey: 'AIzaSyD1ZKWPIHOI5_HuVAKNIjK7J-_6g7EzGvM'
     })
   ],
-  providers: [GoogleMapsAPIWrapper],
+  providers: [GoogleMapsAPIWrapper, FontAwesomeModule, FaIconLibrary],
   bootstrap: [AppComponent],
   entryComponents: [ NgbdModalContent,NgbdModalPedido,NgbdModalDetalle  ]
 })

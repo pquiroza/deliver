@@ -11,6 +11,7 @@ import {NuevoproductoComponent } from './nuevoproducto/nuevoproducto.component';
 import { EditaproductoComponent } from './editaproducto/editaproducto.component';
 import { MainflotaComponent } from './mainflota/mainflota.component';
 import { NuevoflotaComponent } from './nuevoflota/nuevoflota.component';
+import { EditarflotaComponent } from './editarflota/editarflota.component';
 
 const routes: Routes = [
   {path: '',component:HomeComponent},
@@ -23,7 +24,8 @@ const routes: Routes = [
   {path: 'nuevoproducto',  component: NuevoproductoComponent},
   {path: 'editaproducto', component: EditaproductoComponent},
   {path: 'mainflota', component: MainflotaComponent },
-  {path: 'nuevoflota', component: NuevoflotaComponent}
+  {path: 'nuevoflota', component: NuevoflotaComponent},
+  {path: 'editarflota', component: EditarflotaComponent}
 
 ];
 

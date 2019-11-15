@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Pedidofinal } from '../pedidofinal';
+import { Posicion } from '../posicion';
 import { MapsAPILoader, AgmMap } from '@agm/core';
 import { GoogleMapsAPIWrapper } from '@agm/core/services';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument  } from '@angular/fire/firestore';
@@ -34,6 +35,9 @@ interface Location {
 export interface PedidoId extends Pedidofinal {
   id: string;
 }
+export interface PosicionId extends Posicion{
+  id: string;
+}
 
 @Component({
   selector: 'app-main',
@@ -44,7 +48,8 @@ export class MainComponent implements OnInit {
   faSearch = faSearch;
 public pedidosCollection: AngularFirestoreCollection<Pedidofinal>;
 pedidos: Observable<PedidoId[]>;
-
+public posicionCollecion: AngularFirestoreCollection<Posicion>;
+posiciones: Observable<PosicionId[]>;
 
 
 
@@ -61,7 +66,12 @@ return {id, ...data}
 
     })))
 
-
+    this.posicionCollecion = afs.collection<Posicion>('MovilPosicion');
+    this.posiciones = this.posicionCollecion.snapshotChanges().pipe(map(actions => actions.map(a => {
+      const data = a.payload.doc.data();
+      const id = a.payload.doc.id;
+      return {id, ...data}
+    })))
 
   }
 
