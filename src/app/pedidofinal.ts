@@ -10,7 +10,13 @@ export interface Pedidofinal {
   callearray: [];
   estado: string;
   movil: string;
+  idmovil: string;
   lat: number;
   lng: number;
   total: number;
+  fecha: number;
+  year: number;
+  mes: number;
+  dia: number;
+  hora: number;
 }

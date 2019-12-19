@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FontAwesomeModule, FaIconLibrary, FaConfig } from '@fortawesome/angular-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-
+import { Vehiculo } from '../vehiculo';
 declare var google: any;
 
 
@@ -38,6 +38,9 @@ export interface PedidoId extends Pedidofinal {
 export interface PosicionId extends Posicion{
   id: string;
 }
+export interface VehiculoId extends Vehiculo{
+  id: string;
+}
 
 @Component({
   selector: 'app-main',
@@ -50,11 +53,39 @@ public pedidosCollection: AngularFirestoreCollection<Pedidofinal>;
 pedidos: Observable<PedidoId[]>;
 public posicionCollecion: AngularFirestoreCollection<Posicion>;
 posiciones: Observable<PosicionId[]>;
+public vehiculosCollection: AngularFirestoreCollection<Vehiculo>;
+vehiculos: Observable<VehiculoId[]>;
+geocoder: any;
+latlng: any;
 
-
-
-    constructor(private router: Router,private afs: AngularFirestore,library: FaIconLibrary, faConfig: FaConfig) {
+    constructor(private router: Router,private afs: AngularFirestore,library: FaIconLibrary, faConfig: FaConfig, public mapsApiLoader: MapsAPILoader) {
   //  faConfig.defaultPrefix = 'far';
+
+  this.mapsApiLoader.load().then(() => {
+
+    const pt1 = new google.maps.LatLng(
+      -33.407902,
+      -71.127879
+    )
+    const pt2 = new google.maps.LatLng(
+      -33.454489599999995,
+      -70.6330624
+    )
+
+    let distance = google.maps.geometry.spherical.computeDistanceBetween(pt1, pt2);
+    console.log(distance);
+
+
+
+
+  })
+
+
+
+
+
+//  let distance = new google.maps.geometry.spherical.computeDistanceBetween(pt1,pt2);
+//  console.log(distance);
 
     library.addIcons(faSearch);
 
@@ -62,16 +93,45 @@ posiciones: Observable<PosicionId[]>;
     this.pedidos = this.pedidosCollection.snapshotChanges().pipe(map(actions => actions.map(a => {
 const data = a.payload.doc.data();
 const id = a.payload.doc.id;
+console.log(data.lat);
+console.log(data.lng);
 return {id, ...data}
 
     })))
 
-    this.posicionCollecion = afs.collection<Posicion>('MovilPosicion');
+    this.vehiculosCollection = this.afs.collection<Vehiculo>('Movil',ref => ref.where('estado','==','Activo'));
+
+    var p1 = new Promise((resolve, reject) => {
+        this.vehiculos = this.vehiculosCollection.valueChanges();
+        this.vehiculos.subscribe(v => {
+          resolve(v);
+        })
+    });
+
+    p1.then((val: Array<Vehiculo>) => {
+      val.forEach(data => {
+        console.log(data);
+      })
+    })
+
+
+
+
+
+
+
+    this.posicionCollecion = afs.collection<Posicion>('MovilLive', ref => ref.where('estado','==','Activo'));
     this.posiciones = this.posicionCollecion.snapshotChanges().pipe(map(actions => actions.map(a => {
       const data = a.payload.doc.data();
       const id = a.payload.doc.id;
+      console.log(data.lat,data.lng);
+
       return {id, ...data}
     })))
+
+
+
+
 
   }
 
@@ -79,6 +139,12 @@ return {id, ...data}
   detallePedido(idPedido){
     this.router.navigate(['/detallepedido'], {queryParams:{idPedido:idPedido}});
   }
+
+
+detalleVehiculo(idvehiculo){
+  this.router.navigate(['/editarflota'],{queryParams:{idVehiculo:idvehiculo}})
+}
+
 
   ngOnInit() {
   }

@@ -32,7 +32,7 @@ export class NuevoflotaComponent implements OnInit {
 
     const id = this.afs.createId();
     const movilCollection: AngularFirestoreCollection<Vehiculo> = this.afs.collection<Vehiculo>('Movil');
-    const movil: Vehiculo = {id,patente,marca,modelo,year,conductor,estado: "Activo"};
+    const movil: Vehiculo = {id,patente,marca,modelo,year,estado: "Activo"};
     movilCollection.doc(id).set(movil);
     this.router.navigate(['/mainflota']);
   }

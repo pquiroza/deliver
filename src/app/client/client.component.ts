@@ -133,10 +133,15 @@ calle = calle.toLowerCase();
 extra = extra.toLowerCase();
 let extraarray = extra.split(" ");
 let callearray = calle.split(" ");
+
 callearray.push(numero);
 extraarray.forEach(e => {
   callearray.push(e);
 })
+let nombrearray =nombre.toLowerCase().split(" ");
+//nombrearray.push(nombre.toLowerCase());
+nombrearray.push(apellido.toLowerCase());
+nombrearray.push(rut.toLowerCase());
 
 console.log(callearray);
 if (nombre=="" || apellido=="" || rut=="" || calle=="" || numero=="" || telefono==""){
@@ -167,7 +172,7 @@ if (nombre=="" || apellido=="" || rut=="" || calle=="" || numero=="" || telefono
           lng = results[0].geometry.location.lng()
           const  clientsCollection: AngularFirestoreCollection<Client> = this.afs.collection<Client>('Client'); ;
         //  clientsCollection =
-        const client: Client ={id,nombre,apellido,rut,telefono,calle,numero,extra,comuna,callearray,lat: lat,lng: lng};
+        const client: Client ={id,nombre,apellido,rut,telefono,calle,numero,extra,comuna,callearray,nombrearray,lat: lat,lng: lng};
            clientsCollection.doc(id).set(client);
 
         }

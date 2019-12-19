@@ -4,7 +4,6 @@ export interface Vehiculo {
   marca: string;
   modelo: string;
   year: string;
-  conductor: string;
   estado: string;
 
 

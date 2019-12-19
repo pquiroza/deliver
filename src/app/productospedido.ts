@@ -1,4 +1,5 @@
 export interface Productospedido {
+  id:string;
   idpedido: string;
   idproducto: string;
   nombreproducto: string;

@@ -45,6 +45,10 @@ tostada:any;
   public pedidosCollection: AngularFirestoreCollection<Pedidofinal>;
   pedidos: Observable<PedidofinalId[]>;
 
+  public pedidosentregadosCollection: AngularFirestoreCollection<Pedidofinal>;
+  pedidosentregados: Observable<PedidofinalId[]>;
+
+
   vehiculo: any;
   constructor(public route: ActivatedRoute, public afs: AngularFirestore, library: FaIconLibrary) {
     library.addIcons(faTimes);
@@ -58,6 +62,14 @@ tostada:any;
         console.log(this.vehiculo);
     this.pedidosCollection = this.afs.collection<Pedidofinal>('Pedido', ref => ref.where('estado','==','Ingresado').where('movil','==',this.vehiculo.patente));
     this.pedidos = this.pedidosCollection.snapshotChanges().pipe(map(actions => actions.map(a => {
+      const data = a.payload.doc.data();
+      const id = a.payload.doc.id;
+      return {id, ...data}
+    })));
+
+
+    this.pedidosentregadosCollection = this.afs.collection<Pedidofinal>('Pedido', ref => ref.where('estado','==','Entregado').where('movil','==',this.vehiculo.patente));
+    this.pedidosentregados = this.pedidosentregadosCollection.snapshotChanges().pipe(map(actions => actions.map(a => {
       const data = a.payload.doc.data();
       const id = a.payload.doc.id;
       return {id, ...data}
@@ -145,7 +157,7 @@ this.productoDoc = this.afs.doc<Product>('Producto/'+idProducto);
           console.log("CREAR")
           const idcarga = this.afs.createId();
 
-          const carga: Carga = {id: idcarga, idvehiculo: idVehiculo, idproducto: idProducto,cantidad:cantidad,nombreproducto: nombreProducto }
+          const carga: Carga = {id: idcarga, idvehiculo: idVehiculo, idproducto: idProducto,cantidad:cantidad,nombreproducto: nombreProducto, precio: p.precio }
           this.cargaCollection.doc(idcarga).set(carga);
           this.productosCollection.doc(idProducto).update({stock: stock-cantidad});
 

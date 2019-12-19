@@ -30,6 +30,8 @@ import { EditaproductoComponent } from './editaproducto/editaproducto.component'
 import { MainflotaComponent } from './mainflota/mainflota.component';
 import { NuevoflotaComponent } from './nuevoflota/nuevoflota.component';
 import { EditarflotaComponent } from './editarflota/editarflota.component';
+import { ListaclientesComponent } from './listaclientes/listaclientes.component';
+import { DetalleclienteComponent } from './detallecliente/detallecliente.component';
 
    firebase.initializeApp(environment.firebase);
 @NgModule({
@@ -50,6 +52,8 @@ import { EditarflotaComponent } from './editarflota/editarflota.component';
     MainflotaComponent,
     NuevoflotaComponent,
     EditarflotaComponent,
+    ListaclientesComponent,
+    DetalleclienteComponent,
 
   ],
   imports: [
@@ -62,7 +66,8 @@ import { EditarflotaComponent } from './editarflota/editarflota.component';
     NgbModule,
       FontAwesomeModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyD1ZKWPIHOI5_HuVAKNIjK7J-_6g7EzGvM'
+      apiKey: 'AIzaSyD1ZKWPIHOI5_HuVAKNIjK7J-_6g7EzGvM',
+      libraries: ["geometry"]
     })
   ],
   providers: [GoogleMapsAPIWrapper, FontAwesomeModule, FaIconLibrary],

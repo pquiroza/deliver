@@ -15,15 +15,15 @@
       <div class="sidebar-sticky">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link active" href="javascript:;" routerLink="/main">
+            <a class="nav-link " href="javascript:;" routerLink="/main">
               <span data-feather="home"></span>
-              Home <span class="sr-only">(current)</span>
+              Home
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="javascript:;" routerLink="/client">
+            <a class="nav-link active" href="javascript:;" routerLink="/listaclientes">
               <span data-feather="file"></span>
-              Clientes
+              Clientes  <span class="sr-only">(current)</span>
             </a>
           </li>
           <li class="nav-item">
@@ -38,6 +38,9 @@
               Administración de Flota
             </a>
           </li>
+
+
+
           <li class="nav-item">
             <a class="nav-link" href="javascript:;" routerLink="/Reporte">
               <span data-feather="bar-chart-2"></span>
@@ -102,7 +105,17 @@
       <div>
         <agm-map [latitude]="-33.492246" [longitude]="-70.651889" [zoom]="15">
 
-  <agm-marker *ngFor="let p of pedidos | async" [latitude]="p.lat" [longitude]="p.lng"></agm-marker>
+  <agm-marker *ngFor="let p of pedidos | async" [latitude]="p.lat" [longitude]="p.lng">
+<agm-info-window>
+<h3>Cliente: {{p.nombre+" "+p.apellido}}</h3>
+<h3>Direccion: {{p.calle+" "+p.numero+" "+p.extra}}</h3>
+<h3>Móvil: {{p.movil}}</h3>
+<h3>Total: {{p.total}}</h3>
+<button type="button" class="btn btn-sm btn-outline-secondary" (click)="detallePedido(p.id)">Ver Pedido</button>
+
+</agm-info-window>
+
+  </agm-marker>
   <agm-marker *ngFor="let ps of posiciones | async" [latitude]="ps.lat" [longitude]="ps.lng"
   [iconUrl]="{
     url: './assets/truck.png',
@@ -113,7 +126,10 @@
   }"
 
   >
-    <agm-info-window>Movil: {{ps.patente}}
+    <agm-info-window>
+      <h3>Movil: {{ps.patente}}</h3>
+      <button type="button" class="btn btn-sm btn-outline-secondary" (click)="detalleVehiculo(ps.idvehiculo)">Detalle Vehículo</button>
+
 
 
 

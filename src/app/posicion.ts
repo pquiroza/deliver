@@ -5,6 +5,7 @@ export interface Posicion {
   lat: number;
   lng: number;
   hora: string;
+  estado: string;
 
 
 }

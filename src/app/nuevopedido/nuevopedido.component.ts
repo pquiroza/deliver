@@ -11,6 +11,9 @@ import { Carro } from '../carro';
 import { Pedido } from '../pedido';
 import { Pedidofinal } from '../pedidofinal';
 import { Productospedido } from  '../productospedido';
+import { Posicion } from '../posicion';
+import { MapsAPILoader, AgmMap } from '@agm/core';
+declare var google: any;
 
 @Component({
   selector: 'app-client',
@@ -40,6 +43,14 @@ export interface CarroId extends Carro{
 }
 export interface ProductId extends Product {
     id: string;
+}
+export interface PosicionId extends Posicion {
+  id: string;
+}
+export interface valores{
+  patente: string;
+  idvehiculo: string;
+  distancia: number;
 }
 
 
@@ -75,7 +86,7 @@ export class NuevopedidoComponent implements OnInit {
 
   public pedidofinalCollection: AngularFirestoreCollection<Pedidofinal>;
 
-  constructor(private afs: AngularFirestore, public route: ActivatedRoute, private modalService: NgbModal,private router: Router) {
+  constructor(private afs: AngularFirestore, public route: ActivatedRoute, private modalService: NgbModal,private router: Router,public mapsApiLoader: MapsAPILoader) {
     this.pedidoCollection = afs.collection<Pedido>('Carro');
     this.pedidofinalCollection = afs.collection<Pedidofinal>('Pedido');
     this.carroCollection = afs.collection<Carro>('Carro');
@@ -167,47 +178,134 @@ this.productoDoc.snapshotChanges().subscribe(pro => {
 
 
 
-finalizaPedido(idc){
-  console.log(idc);
-  console.log(this.client);
-  const idpf = this.afs.createId();
-  const pcliente: Pedidofinal = {id:idpf,idcliente:idc,nombre:this.client.nombre,apellido:this.client.apellido,calle: this.client.calle,numero: this.client.numero, extra: this.client.extra,comuna: this.client.comuna,callearray:this.client.callearray,estado:"Ingresado",movil:"JRRB99",lat:this.client.lat,lng:this.client.lng, total: 0}
-  this.pedidofinalCollection.doc(idpf).set(pcliente);
-  let productosPedidoCollection: AngularFirestoreCollection<Productospedido>;
-  productosPedidoCollection = this.afs.collection<Productospedido>('ProductosPedido');
-  this.productsCarrofinal = this.afs.collection<Carro>('Carro',ref => ref.where('idusuario','==',this.idcliente).where('estado','==',0));
+async asignaPedido(lat,lng){
+  let arreglo: Array<any>;
+  return new Promise((resolve, reject) => {
+     arreglo=[];
+    let posicionCollection: AngularFirestoreCollection<Posicion>;
+    let posiciones: any;
 
-  var p1 = new Promise(
-    (resolve,reject) =>{
+    posicionCollection = this.afs.collection<Posicion>('MovilLive');
+    posiciones = posicionCollection.snapshotChanges().pipe(map(actions => actions.map(a => {
+      const data = a.payload.doc.data();
 
-      console.log("PROMISE ")
-    this.productsCarro2 = this.productsCarrofinal.valueChanges();
-    this.productsCarro2.subscribe(p => {
 
-      resolve(p);
-    })
+      return data;
+    })))
 
-    }
-  );
+    posiciones.subscribe(p => {
+      let distancia = 1000000000;
+      let idmovil ="";
 
-  let total = 0;
-  p1.then((val: Array<Carro>) => {
+      for(const pos of p){
 
-    val.forEach(data => {
+        this.mapsApiLoader.load().then(() => {
+            let pt1 = new google.maps.LatLng(
+              pos.lat,
+              pos.lng
+            )
+            let pt2 = new google.maps.LatLng(
+              lat,
+              lng
+            )
+          let distance = google.maps.geometry.spherical.computeDistanceBetween(pt1,pt2);
 
-      const pedidoProducto: Productospedido = {idpedido: idpf,idproducto: data.idproducto,nombreproducto: data.nombreproducto,cantidad:data.cantidad,precio:data.precio}
-      productosPedidoCollection.add(pedidoProducto);
-      total = total + (data.cantidad * data.precio);
-      this.pedidoCollection.doc(data.id).update({estado:1});
+            let v: valores = { idvehiculo: pos.idvehiculo, distancia: distance, patente: pos.patente}
+            arreglo.push(v);
+resolve(arreglo);
+
+        })
+      };
 
 
     });
-    const modalRef = this.modalService.open(NgbdModalPedido);
-    modalRef.componentInstance.name = "Pedido Ingresado Exitosamente";
-    console.log(total);
-    this.pedidofinalCollection.doc(idpf).update({total: total})
-    modalRef.result.then(() => { this.router.navigate(['/main']);},() => { this.router.navigate(['/main'])})
+  //  resolve(arreglo);
   })
+
+
+
+
+
+
+
+}
+
+finalizaPedido(idc){
+
+
+
+  var d = new Date();
+  console.log(d.getMonth());
+  console.log(d.getFullYear());
+  console.log(d.getHours());
+  console.log(d.getDate());
+ const idpf = this.afs.createId();
+  console.log(idc);
+  console.log(this.client);
+let idvehiculo: "";
+let patente: "";
+let productosPedidoCollection: AngularFirestoreCollection<Productospedido>;
+ this.asignaPedido(this.client.lat,this.client.lng).then((p: Array<any>) =>  {
+
+   p.sort(function(a,b){
+     return a.distancia - b.distancia;
+   });
+   console.log(p);
+   idvehiculo = p[0].idvehiculo;
+   patente = p[0].patente;
+   
+
+
+
+
+   const pcliente: Pedidofinal = {id:idpf,idcliente:idc,nombre:this.client.nombre,apellido:this.client.apellido,calle: this.client.calle,numero: this.client.numero, extra: this.client.extra,comuna: this.client.comuna,callearray:this.client.callearray,estado:"Ingresado",movil:patente,idmovil:idvehiculo,lat:this.client.lat,lng:this.client.lng, total: 0,fecha: Date.now(),year: d.getFullYear(), mes: d.getMonth()+1,dia:d.getDate(),hora:d.getHours()}
+   this.pedidofinalCollection.doc(idpf).set(pcliente);
+
+   productosPedidoCollection = this.afs.collection<Productospedido>('ProductosPedido');
+   this.productsCarrofinal = this.afs.collection<Carro>('Carro',ref => ref.where('idusuario','==',this.idcliente).where('estado','==',0));
+
+
+   var p1 = new Promise(
+     (resolve,reject) =>{
+
+       console.log("PROMISE ")
+     this.productsCarro2 = this.productsCarrofinal.valueChanges();
+     this.productsCarro2.subscribe(p => {
+
+       resolve(p);
+     })
+
+     }
+   );
+
+   let total = 0;
+   p1.then((val: Array<Carro>) => {
+
+     val.forEach(data => {
+       let idpp = this.afs.createId();
+       const pedidoProducto: Productospedido = {id:idpp,idpedido: idpf,idproducto: data.idproducto,nombreproducto: data.nombreproducto,cantidad:data.cantidad,precio:data.precio}
+       productosPedidoCollection.add(pedidoProducto);
+       total = total + (data.cantidad * data.precio);
+       this.pedidoCollection.doc(data.id).update({estado:1});
+
+
+     });
+     const modalRef = this.modalService.open(NgbdModalPedido);
+     modalRef.componentInstance.name = "Pedido Ingresado Exitosamente";
+     console.log(total);
+     this.pedidofinalCollection.doc(idpf).update({total: total})
+     modalRef.result.then(() => { this.router.navigate(['/main']);},() => { this.router.navigate(['/main'])})
+   })
+
+
+  })
+
+
+
+
+
+
+
 }
 
 

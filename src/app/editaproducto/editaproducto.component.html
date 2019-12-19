@@ -21,13 +21,13 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link " href="javascript:;" routerLink="/client">
+            <a class="nav-link active" href="javascript:;" routerLink="/listaclientes">
               <span data-feather="file"></span>
               Clientes  <span class="sr-only">(current)</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="javascript:;" routerLink="/mainproducto">
+            <a class="nav-link" href="javascript:;" routerLink="/mainproducto">
               <span data-feather="shopping-cart"></span>
               Productos
             </a>
@@ -38,6 +38,8 @@
               Administración de Flota
             </a>
           </li>
+
+
 
           <li class="nav-item">
             <a class="nav-link" href="javascript:;" routerLink="/Reporte">
@@ -60,8 +62,8 @@
 
     <div class="container">
       <div class="py-5 text-center">
-        <h2> Editar Producto</h2>
-        <p class="lead">Edita los datos de un producto</p>
+        <h2> Detalle Producto</h2>
+        <p class="lead">Ver Producto</p>
       </div>
 
       <div class="row">
@@ -74,7 +76,7 @@
             <div class="mb-3">
               <label for="nombreproducto">Nombre Producto</label>
               <div class="input-group">
-                <input type="text" class="form-control" id="nombreproducto" #nombreproducto placeholder="Nombre de producto" value="{{producto.nombreProducto}}" required>
+                <input disabled type="text" class="form-control" id="nombreproducto" #nombreproducto placeholder="Nombre de producto" value="{{producto.nombreProducto}}" required>
                 <div class="invalid-feedback" style="width: 100%;">
                   Your username is required.
                 </div>
@@ -83,7 +85,7 @@
             <div class="mb-3">
               <label for="detalle">Descripción de  Producto</label>
               <div class="input-group">
-                <input type="text" class="form-control" id="detalle" #detalle placeholder="Descripción o detalle del Producto" value="{{producto.detalle}}" required>
+                <input disabled type="text" class="form-control" id="detalle" #detalle placeholder="Descripción o detalle del Producto" value="{{producto.detalle}}" required>
                 <div class="invalid-feedback" style="width: 100%;">
                   Your username is required.
                 </div>
@@ -92,21 +94,58 @@
             <div class="row">
               <div class="col-md-6 mb-3">
                 <label for="cc-name">Precio</label>
-                <input type="number" class="form-control" id="precio" #precio placeholder="" value="{{producto.precio}}" required>
+                <input disabled type="number" class="form-control" id="precio" #precio placeholder="" value="{{producto.precio}}" required>
                 <div class="invalid-feedback">
                   Name on card is required
                 </div>
               </div>
               <div class="col-md-6 mb-3">
                 <label for="cc-number">Stock</label>
-                <input type="text" class="form-control" id="stock" #stock placeholder="" value="{{producto.stock}}" required>
+                <input disabled type="text" class="form-control" id="stock" #stock placeholder="" value="{{producto.stock}}" required>
                 <div class="invalid-feedback">
                   Credit card number is required
                 </div>
               </div>
             </div>
+      <h4 class="mb-3">Nuevo Lote</h4>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="cc-name">Serie</label>
+                <input disabled type="number" class="form-control" id="precio" #precio placeholder="" value="{{producto.precio}}" required>
+                <div class="invalid-feedback">
+                  Name on card is required
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="cc-number">Cantidad</label>
+                <input disabled type="text" class="form-control" id="stock" #stock placeholder="" value="{{producto.stock}}" required>
+                <div class="invalid-feedback">
+                  Credit card number is required
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="cc-name">Fecha Producción</label>
+                <input type="text"  class="form-control" #fechaProduccion id="fechaProduccion"/>
+                <button class="btn btn-primary btn-sm" (click)="d.toggle()">Fecha</button>
+                <div class="invalid-feedback">
+                  Name on card is required
+                </div>
+              </div>
 
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="cc-name">Fecha Vencimiento</label>
+                <input type="text"  class="form-control" #fechaVencimiento id="fechaVencimiento"/>
+                <button class="btn btn-primary btn-sm" (click)="d.toggle()">Fecha</button>
+                <div class="invalid-feedback">
+                  Name on card is required
+                </div>
+              </div>
 
+            </div>
 
 
             <hr class="mb-4">

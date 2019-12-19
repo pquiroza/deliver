@@ -63,7 +63,7 @@
 
     <div class="container">
       <div class="py-5 text-center">
-        <h2> Nuevo Pedido</h2>
+        <h2> Buscar Clientes</h2>
 
       </div>
 
@@ -93,13 +93,17 @@
 
           </ul>
 
-
+          <div class="btn-group mr-2">
+            <button type="button" class="btn btn-sm btn-outline-secondary" (click)="nuevoCliente()">Nuevo Cliente</button>
+          </div>
         </div>
+
+
         <div class="col-md-8 order-md-1">
 
 
             <div class="mb-3">
-              <label for="username">Dirección</label>
+              <label for="username">  Apellido / RUT / Dirección</label>
               <div class="input-group">
                 <input type="text" class="form-control" id="searchDireccion" #searchDireccion placeholder="Escriba Calle " required>
                 <div class="invalid-feedback" style="width: 100%;">
@@ -116,7 +120,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let cl of clients | async" >
+                  <tr *ngFor="let cl of clientsdir | async" >
 
                     <td>
                       {{ cl.calle +" "+cl.numero+" "+" "+cl.extra}}
@@ -128,24 +132,39 @@
                         {{ cl.nombre +" "+ cl.apellido}}
                         </td>
                         <td>
-                              <button class="btn" (click)="ingresarPedido(cl.id)">Ingresa Pedido</button>
+                              <button class="btn" (click)="detalleCliente(cl.id)">Ver Cliente</button>
                           </td>
                           </tr>
-                          <tr *ngFor="let cl of clients2 | async" >
+                          <tr *ngFor="let cln of clientsnom | async" >
 
                             <td>
-                              {{ cl.calle +" "+cl.numero+" "+" "+cl.extra}}
+                              {{ cln.calle +" "+cln.numero+" "+" "+cln.extra}}
                               </td>
                               <td>
-                                {{cl.comuna}}
+                                {{cln.comuna}}
                                 </td>
                               <td>
-                                {{ cl.nombre +" "+ cl.apellido}}
+                                {{ cln.nombre +" "+ cln.apellido}}
                                 </td>
                                 <td>
-                                      <button class="btn" (click)="ingresarPedido(cl.id)">Ingresa Pedido</button>
+                                      <button class="btn" (click)="detalleCliente(cln.id)">Ver Cliente</button>
                                   </td>
                                   </tr>
+                                  <tr *ngFor="let clr of clientsrut | async" >
+
+                                    <td>
+                                      {{ clr.calle +" "+clr.numero+" "+" "+clr.extra}}
+                                      </td>
+                                      <td>
+                                        {{clr.comuna}}
+                                        </td>
+                                      <td>
+                                        {{ clr.nombre +" "+ clr.apellido}}
+                                        </td>
+                                        <td>
+                                              <button class="btn" (click)="detalleCliente(clr.id)">Ver Cliente</button>
+                                          </td>
+                                          </tr>
                   </tbody>
               </table>
 
