@@ -66,7 +66,7 @@ import { DetalleclienteComponent } from './detallecliente/detallecliente.compone
     NgbModule,
       FontAwesomeModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyD1ZKWPIHOI5_HuVAKNIjK7J-_6g7EzGvM',
+      apiKey: '',
       libraries: ["geometry"]
     })
   ],
